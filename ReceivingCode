@@ -1,0 +1,62 @@
+#include <math.h>
+
+void setup() {
+ 
+    pinMode(D0, INPUT);
+    pinMode(D1, INPUT);
+    pinMode(D2, INPUT);
+    pinMode(D3, INPUT);
+    pinMode(D4, INPUT);
+    pinMode(D5, INPUT);
+    pinMode(D6, INPUT);
+    pinMode(DAC1, OUTPUT);
+    pinMode(DAC2, OUTPUT);
+}
+ 
+// the loop function runs over and over again forever
+void loop() {
+ 
+    int ID_Number = -1; // Possible source of error, reinitialization
+ 
+    if (digitalRead(0) == 1)
+    {
+        ID_Number = 0;
+        for (int i = 1; i < 5; i++)
+        {
+            if (digitalRead(i) == 1)
+            {
+                ID_Number = ID_Number + pow(2, i - 1);
+            }
+        }
+        int status = trojan_check(ID_Number);
+        if (status == 1) {
+            analogWrite(DAC1, 4095); // blink green LED
+            delay(1000);
+            analogWrite(DAC1, 0);
+        }
+        else if (status == 0) {
+            analogWrite(DAC2, 4095); // blink red LED
+            delay(1000);
+            analogWrite(DAC2, 0);
+        }
+   }
+   
+   delay(50);
+   
+}
+ 
+int trojan_check(int id) {
+    int status[10]; // database
+    for (int i = 0; i < 10; i++)
+    {
+        status[i] = 0;
+    }
+    status[0] = 1;
+    status[1] = 1;
+ 
+    if (id < sizeof(status)) {
+        return (status[id - 1]);
+    }
+    return -1; // if id is out of bounds
+}
+ 
