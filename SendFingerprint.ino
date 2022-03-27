@@ -72,8 +72,9 @@ void setup()
     Serial.println("Waiting for valid finger...");
       Serial.print("Sensor contains "); Serial.print(finger.templateCount); Serial.println(" templates");
   }
-  pinMode(0, OUTPUT);
-  pinMode(1, OUTPUT);
+  // pinMode(0, OUTPUT); // not used
+  // pinMode(1, OUTPUT);
+
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
@@ -84,9 +85,9 @@ void setup()
 void loop()                     // run over and over again
 {
   IDtoSend = getFingerprintID();
-  if(IDtoSend != 0) // USED TO PRINT 1111111
+  if(IDtoSend != 0) // old error: USED TO PRINT 1111111
   {
-    for (int i = 4; i < 8; i++) // might cause error here due to scope, testing
+    for (int i = 4; i < 8; i++)
     {
       if (IDtoSend%2 == 1)
       {
